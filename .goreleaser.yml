@@ -4,51 +4,51 @@ before:
   hooks:
     - go mod download
 builds:
-- main: ./main.go
-  id: upx
-  env:
-  - CGO_ENABLED=0
-  flags:
-    - -trimpath
-  ldflags:
-    - -w -s -X "github.com/ztelliot/taierspeed-cli/defs.ProgName={{ .ProjectName }}" -X "github.com/ztelliot/taierspeed-cli/defs.ProgVersion=v{{ .Version }}" -X "github.com/ztelliot/taierspeed-cli/defs.BuildDate={{ .Date }}"
-  goos:
-    - linux
-    - darwin
-    - freebsd
-  goarch:
-    - amd64
-    - arm
-    - arm64
-  goarm:
-    - 7
-  ignore:
-    - goos: darwin
-      goarch: arm64
-  hooks:
-    post: ./upx.sh -9 "{{ .Path }}"
-- main: ./main.go
-  id: no-upx
-  env:
-    - CGO_ENABLED=0
-  flags:
-    - -trimpath
-  ldflags:
-    - -w -s -X "github.com/ztelliot/taierspeed-cli/defs.ProgName={{ .ProjectName }}" -X "github.com/ztelliot/taierspeed-cli/defs.ProgVersion=v{{ .Version }}" -X "github.com/ztelliot/taierspeed-cli/defs.BuildDate={{ .Date }}"
-  goos:
-    - linux
-    - windows
-    - darwin
-  goarch:
-    - amd64
-    - arm64
-  ignore:
-    - goos: linux
-      goarch: amd64
-    - goos: linux
-      goarch: arm64
-    - goos: darwin
-      goarch: amd64
+  - main: ./main.go
+    id: upx
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - -w -s -X "github.com/ztelliot/taierspeed-cli/defs.ProgName={{ .ProjectName }}" -X "github.com/ztelliot/taierspeed-cli/defs.ProgVersion=v{{ .Version }}" -X "github.com/ztelliot/taierspeed-cli/defs.BuildDate={{ .Date }}"
+    goos:
+      - linux
+      - darwin
+      - freebsd
+    goarch:
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 7
+    ignore:
+      - goos: darwin
+        goarch: arm64
+    hooks:
+      post: ./upx.sh -9 "{{ .Path }}"
+  - main: ./main.go
+    id: no-upx
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - -w -s -X "github.com/ztelliot/taierspeed-cli/defs.ProgName={{ .ProjectName }}" -X "github.com/ztelliot/taierspeed-cli/defs.ProgVersion=v{{ .Version }}" -X "github.com/ztelliot/taierspeed-cli/defs.BuildDate={{ .Date }}"
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: linux
+        goarch: amd64
+      - goos: linux
+        goarch: arm64
+      - goos: darwin
+        goarch: amd64
 archives:
   - format_overrides:
       - goos: windows
@@ -59,18 +59,17 @@ checksum:
   name_template: 'checksums.txt'
 changelog:
   sort: asc
-gitea_urls:
-  api: "{{ .Env.GITEA_URL }}/api/v1"
-  download: "{{ .Env.GITEA_URL }}"
-release:
-  gitea:
-    owner: ztelliot
-    name: taierspeed-cli
-  disable: false
-blobs:
-  - provider: s3
-    bucket: "{{ .Env.S3_BUCKET }}"
-    region: "{{ .Env.S3_REGION }}"
-    endpoint: "{{ .Env.S3_ENDPOINT }}"
-    folder: "taierspeed/{{.Version}}"
-
+# gitea_urls:
+#   api: "{{ .Env.GITEA_URL }}/api/v1"
+#   download: "{{ .Env.GITEA_URL }}"
+# release:
+#   gitea:
+#     owner: ztelliot
+#     name: taierspeed-cli
+#   disable: false
+# blobs:
+#   - provider: s3
+#     bucket: "{{ .Env.S3_BUCKET }}"
+#     region: "{{ .Env.S3_REGION }}"
+#     endpoint: "{{ .Env.S3_ENDPOINT }}"
+#     folder: "taierspeed/{{.Version}}"
